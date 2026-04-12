@@ -1,64 +1,48 @@
-# ⚙️ Embedded HTTP Server
-A lightweight HTTP server implemented in C from scratch that handles concurrent connections with multi-threading. Supports file serving, GET/POST requests, and dynamic routing with configurable directory support.
-
+# Embedded HTTP Server
+A lightweight HTTP server in C built from scratch. Handles concurrent connections with fork-based multi-processing, supports file serving, and parses HTTP/1.1 requests.
+ 
 ## Features
 - HTTP GET and POST request handling
-- Static file serving from a configurable directory
-- Echo endpoint for request data
-- User-Agent header retrieval
-- File upload and download functionality
-- Multi-threaded connection handling with fork-based concurrency
-- Socket-based server architecture with port reuse
-- Command-line argument parsing for directory specification
-
+- Static file serving from configurable directory
+- Echo and User-Agent endpoints
+- File upload and download
+- Fork-based concurrent connection handling
+- Command-line directory configuration
+ 
 ## Tech Stack
-- **Language**: C
-- **Networking**: POSIX sockets
-- **Concurrency**: Multi-threading with fork()
-- **Protocol**: HTTP/1.1
-
+- Language: C
+- Networking: POSIX sockets
+- Concurrency: fork()
+- Protocol: HTTP/1.1
+ 
 ## Getting Started
-**Prerequisites**
-- GCC compiler
-- POSIX-compliant system (Linux/Unix/macOS)
-
-**Installation**
-```bash
-git clone https://github.com/yourusername/embedded-http-server.git
-cd embedded-http-server/app
-gcc server.c -o server
+Prerequisites: GCC compiler, POSIX-compliant system (Linux/Unix/macOS)
+ 
 ```
-**Running the Server**
-```bash
+cd app
+gcc server.c -o server
 ./server --directory /path/to/directory
 ```
-If no directory is specified, the server uses the current directory. Server listens on port 4221.
-
-### Testing the Server
-
-**Simple GET request**:
+ 
+Server listens on port 4221. If no directory is specified, uses the current directory.
+ 
+### Testing
 ```bash
+# GET request
 curl -v http://localhost:4221/
-```
-**Echo endpoint**:
-```bash
+ 
+# Echo endpoint
 curl -v http://localhost:4221/echo/hello
-```
-**User-Agent retrieval**:
-```bash
-curl -v http://localhost:4221/user-agent
-```
-**File upload**:
-```bash
+ 
+# File upload
 curl -v -X POST http://localhost:4221/files/upload.txt -d 'Hello World'
-```
-**File download**:
-```bash
+ 
+# File download
 curl -v http://localhost:4221/files/upload.txt
 ```
-
+ 
 ## Architecture
-- **main()**: Initializes server socket, parses arguments, listens for connections
-- **handle_connection()**: Processes client requests, parses HTTP methods, routes requests, and sends responses
-- **Socket Management**: SO_REUSEPORT configuration, bind, listen, accept patterns
-- **Concurrency**: Fork-based multi-process handling for concurrent client connections
+- `main()`: Initializes server socket, parses arguments, listens for connections
+- `handle_connection()`: Parses HTTP methods, routes requests, sends responses
+- Socket management with SO_REUSEPORT, bind, listen, accept
+- Fork-based multi-process handling for concurrent clients
